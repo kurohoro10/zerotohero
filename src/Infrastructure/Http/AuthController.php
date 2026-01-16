@@ -11,15 +11,21 @@ final class AuthController
     public function login(): void
     {
         try {
-            $token = $this->auth->login(
+            $this->auth->login(
                 $_POST['email'] ?? '',
                 $_POST['password'] ?? ''
             );
 
-            echo json_encode(['token' => $token]);
+            echo json_encode(['status' => 'logged_in']);
         } catch (AuthenticationException) {
             http_response_code(401);
             echo json_encode(['error' => 'Unauthorized']);
         }
+    }
+
+    public function logout(): void
+    {
+        $this->auth->logout();
+        echo json_encode(['status' => 'logged_out']);
     }
 }
